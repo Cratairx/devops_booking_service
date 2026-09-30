@@ -1,0 +1,62 @@
+name: CI and build docker image
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+jobs:
+  test_and_build:
+    runs-on: ubuntu-latest
+
+
+    # det här kan läggas till om man inte använder testcontainers
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+          MYSQL_DATABASE: bookingdb
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: check out code
+        uses: actions/checkout@v4
+
+      - name: set up javen enviroment
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: "maven"
+
+      - name: build and run tests
+        run: mvn -B package
+
+
+
+      - name: Log in to docker hub
+        if: github.event_name == 'push'
+        run: echo ${{secrets.DOCKERHUB_TOKEN}} | docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin
+
+      - name: build image
+        run: |
+          docker build -t craty321/booking-service-java25:${{github.run_number}} .
+
+      - name: push docker hub
+        if: github.event_name == 'push'
+        run: |
+          docker push craty321/booking-service-java25:${{github.run_number}}
+        env:
+          # om man får error här kan det vara att det ska stå localhost:3306 istället
+          SPRING_DATASOURCE_URL: ${{secrets.DATABASE_URL}}
+          SPRING_DATASOURCE_USERNAME: ${{secrets.DATABASE_USERNAME}}
+          SPRING_DATASOURCE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
