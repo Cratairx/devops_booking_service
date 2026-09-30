@@ -17,7 +17,7 @@ public class CustomerClient {
 // testar på min bärbara att allt fungerar här också
     public boolean customerExists(Long customerId) {
         try {
-            restClient.get().uri("/api/customer/{id}", customerId).retrieve().toBodilessEntity();
+            restClient.get().uri("/api/customer/{i}", customerId).retrieve().toBodilessEntity();
             return true;
         } catch (HttpClientErrorException.NotFound e) {
             return false;
