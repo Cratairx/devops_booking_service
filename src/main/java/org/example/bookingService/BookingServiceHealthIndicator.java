@@ -12,7 +12,7 @@ import org.springframework.web.client.RestClient;
 public class BookingServiceHealthIndicator implements HealthIndicator {
     public static final Logger logger = LoggerFactory.getLogger(BookingServiceHealthIndicator.class);
     private final RestClient restClient;
-    public BookingServiceHealthIndicator(@Value("${booking-service.base-url}") String baseUrl) {
+    public BookingServiceHealthIndicator(@Value("${customer-service.base-url}") String baseUrl) {
         this.restClient = RestClient.create(baseUrl);
     }
     @Override
