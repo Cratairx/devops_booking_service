@@ -36,7 +36,7 @@ public class RoomController {
         Room room = new Room();
         room.setRoomNumber(roomNumber);
         room.setRoomType(roomType);
-        Room saved = roomService.saveRoom(room);
+        Room saved = roomService.roomExists(room);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
@@ -49,7 +49,7 @@ public class RoomController {
         Room room = roomService.getRoomById(id);
         room.setRoomNumber(roomNumber);
         room.setRoomType(roomType);
-        return ResponseEntity.ok(roomService.saveRoom(room));
+        return ResponseEntity.ok(roomService.roomExists(room));
     }
 
     @DeleteMapping("/{id}")

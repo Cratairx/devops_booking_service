@@ -1,6 +1,6 @@
 package org.example.bookingService.Services.impl;
 
-import jakarta.transaction.Transactional;
+
 import org.example.bookingService.Client.CustomerClient;
 import org.example.bookingService.Models.Booking;
 import org.example.bookingService.Models.Room;
@@ -8,7 +8,7 @@ import org.example.bookingService.Repositories.BookingRepository;
 import org.example.bookingService.Repositories.RoomRepository;
 import org.example.bookingService.Services.BookingService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -89,15 +89,13 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public Booking getBookingByCustomerId(Long customerId) {
         return bookingRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Room not found with id: " + customerId));    }
+                .orElseThrow(() -> new RuntimeException("Room not found with id: " + customerId));
+    }
 
     @Override
     public boolean hasBookingsForCustomer(Long customerId) {
         return bookingRepository.existsBookingForCustomer(customerId);
     }
-
-
-
 
 }
 

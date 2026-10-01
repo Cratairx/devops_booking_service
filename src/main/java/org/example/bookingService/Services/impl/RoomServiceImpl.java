@@ -24,7 +24,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room saveRoom(Room room) {
+    public Room roomExists(Room room) {
        return roomRepository.save(room);
     }
 
@@ -44,7 +44,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean saveRoom(Long id) {
+    public boolean roomExists(Long id) {
         return  roomRepository.existsById(id);
     }
 
