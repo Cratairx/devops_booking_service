@@ -39,12 +39,12 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void saveRoomPersistsAndReturnsRoom() {
+    void roomExists() {
         Room room = new Room(null, "202", RoomType.DOUBLE);
         Room saved = new Room(1L, "202", RoomType.DOUBLE);
         when(roomRepository.save(room)).thenReturn(saved);
 
-        assertThat(roomService.saveRoom(room)).isEqualTo(saved);
+        assertThat(roomService.roomExists(room)).isEqualTo(saved);
     }
 
     @Test
@@ -81,10 +81,10 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void saveRoomByIdDelegatesExistsCheck() {
+    void roomExistsByIdDelegatesExistsCheck() {
         when(roomRepository.existsById(1L)).thenReturn(true);
 
-        assertThat(roomService.saveRoom(1L)).isTrue();
+        assertThat(roomService.roomExists(1L)).isTrue();
     }
 
     @Test

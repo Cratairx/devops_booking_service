@@ -9,13 +9,13 @@ public interface RoomService {
 
     List<Room> getAllRooms();
 
-    Room saveRoom(Room room);
+    Room roomExists(Room room);
 
     boolean deleteRoom(Long id);
 
     Room getRoomById(Long id);
 
-    boolean saveRoom(Long id);
+    boolean roomExists(Long id);
 
     List<Room> getAvailableRooms(LocalDate startDate, LocalDate endDate);
 
