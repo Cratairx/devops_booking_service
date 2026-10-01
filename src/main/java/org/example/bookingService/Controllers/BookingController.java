@@ -4,11 +4,14 @@ import org.example.bookingService.Models.Booking;
 import org.example.bookingService.Models.Room;
 import org.example.bookingService.Services.BookingService;
 import org.example.bookingService.Services.RoomService;
+import org.springframework.boot.logging.log4j2.Log4J2LoggingSystem;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 
 
@@ -62,12 +65,27 @@ public class BookingController {
 
     }
 
+    private final Logger log = LoggerFactory.getLogger(BookingController.class);
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBooking(@PathVariable Long id) {
         boolean success = bookingService.deleteBooking(id);
-        return success
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.notFound().build();
+        try {
+            if (success) {
+                log.info("Successfully Deleted booking with id {}", id);
+                return ResponseEntity.ok().build();
+
+            } else {
+                log.warn("Failed to delete booking with id {}", id);
+                return ResponseEntity.notFound().build();
+            }
+        }catch (Exception e){
+            log.error("Error while deleting booking with id {}", id, e);
+        }
+
+        log.error("something big happened you should not reach this message");
+        return null;
+
     }
 
     @GetMapping
