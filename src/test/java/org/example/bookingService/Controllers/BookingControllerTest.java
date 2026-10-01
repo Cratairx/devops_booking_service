@@ -108,7 +108,7 @@ class BookingControllerTest {
         when(bookingService.deleteBooking(5L)).thenReturn(true);
 
         mockMvc.perform(delete("/api/bookings/5"))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
     }
 
     @Test

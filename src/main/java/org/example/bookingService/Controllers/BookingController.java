@@ -72,7 +72,7 @@ public class BookingController {
         boolean success = bookingService.deleteBooking(id);
         try {
             if (success) {
-                log.info("Sucessfully Deleted booking with id {}", id);
+                log.info("Successfully Deleted booking with id {}", id);
                 return ResponseEntity.ok().build();
 
             } else {
@@ -83,7 +83,7 @@ public class BookingController {
             log.error("Error while deleting booking with id {}", id, e);
         }
 
-        log.error("something big happend you should not reach this message");
+        log.error("something big happened you should not reach this message");
         return null;
 
     }
