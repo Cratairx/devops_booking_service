@@ -17,7 +17,7 @@ main är vår lång livade branch och denna ska hålla ren och körbar dvs i ett
     i docker hub.
 11. Samma image som testas i staging deployas till produktion
     railway upptäcker den nya imagen och deployar automatiskt till produktion
-12. Ändringen är nu live på: https://devopsbookingservice-production.up.railway.app/
+12. Ändringen är nu live på: https://devopsbookingservice-production.up.railway.app/ och här https://devopsbookingservice-staging.up.railway.app/
 
 
 # Varför vi har valt Github Flow
