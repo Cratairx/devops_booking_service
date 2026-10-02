@@ -1,5 +1,6 @@
 package org.example.bookingService.Services.impl;
 
+import org.example.bookingService.Exceptions.RoomNotFoundException;
 import org.example.bookingService.Models.Room;
 import org.example.bookingService.Repositories.RoomRepository;
 import org.example.bookingService.Services.RoomService;
@@ -40,7 +41,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room getRoomById(Long id) {
         return roomRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Room not found with id: " + id));
+                .orElseThrow(() -> new RoomNotFoundException(id));
     }
 
     @Override
