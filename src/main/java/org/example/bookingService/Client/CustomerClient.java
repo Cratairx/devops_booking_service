@@ -12,6 +12,7 @@ import org.springframework.web.client.RestClient;
 @Component
 public class CustomerClient {
 
+    int mergeConflictInt = 0;
     private static final Logger log = (Logger) LoggerFactory.getLogger(CustomerClient.class);
 
     private final RestClient restClient;
