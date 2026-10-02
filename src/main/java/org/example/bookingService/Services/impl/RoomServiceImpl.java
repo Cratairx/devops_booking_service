@@ -1,6 +1,8 @@
 package org.example.bookingService.Services.impl;
 
+import org.example.bookingService.Exceptions.RoomHasBookingsException;
 import org.example.bookingService.Models.Room;
+import org.example.bookingService.Repositories.BookingRepository;
 import org.example.bookingService.Repositories.RoomRepository;
 import org.example.bookingService.Services.RoomService;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,11 @@ import java.util.List;
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
+    private final BookingRepository bookingRepository;
 
-    public RoomServiceImpl(RoomRepository roomRepository) {
+    public RoomServiceImpl(RoomRepository roomRepository, BookingRepository bookingRepository) {
         this.roomRepository = roomRepository;
+        this.bookingRepository = bookingRepository;
     }
 
     @Override
@@ -25,16 +29,19 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room roomExists(Room room) {
-       return roomRepository.save(room);
+        return roomRepository.save(room);
     }
 
     @Override
     public boolean deleteRoom(Long id) {
-        if (roomRepository.existsById(id)) {
-            roomRepository.deleteById(id);
-            return true;
+        if (!roomRepository.existsById(id)) {
+            return false;
         }
-        return false;
+        if (bookingRepository.existsByRoomId(id)) {
+            throw new RoomHasBookingsException(id);
+        }
+        roomRepository.deleteById(id);
+        return true;
     }
 
     @Override
