@@ -12,7 +12,8 @@ import org.springframework.web.client.RestClient;
 @Component
 public class CustomerClient {
 
-    String mergeKonfliktVariabel = "MergeKonfliktVariabel";
+
+   
     private static final Logger log = (Logger) LoggerFactory.getLogger(CustomerClient.class);
 
     private final RestClient restClient;
