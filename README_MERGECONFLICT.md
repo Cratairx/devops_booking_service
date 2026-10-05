@@ -11,3 +11,5 @@ Gå in i det PR som var markerat med konflikten
 Klicka på "resolve conflict" knappen
 Diskutera om vad bästa ändring för lösning av konflikt är, i detta fall kom vi fram till att ta bort båda variabler från filen.
 Markerade konflikten som löst, checka att tester och image byggs upps och sedan commita mergen.
+
+Vi hade även en merge conflict där 2 olika import hamnade på samma rad från olika brancher, så efter snabb analys så valde vi att acceptera båda för att båda behövde användas.
