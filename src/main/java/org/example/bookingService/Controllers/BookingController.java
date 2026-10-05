@@ -9,9 +9,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 
@@ -44,10 +47,10 @@ public class BookingController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
-       if(startDate== null || endDate==null || !startDate.isBefore(endDate)){
-           return ResponseEntity.badRequest().build();
+        if (startDate == null || endDate == null || !startDate.isBefore(endDate)) {
+            return ResponseEntity.badRequest().build();
 
-       }
+        }
         return ResponseEntity.ok(roomService.getAvailableRooms(startDate, endDate));
     }
 
@@ -65,28 +68,21 @@ public class BookingController {
 
     }
 
-    private final Logger log = LoggerFactory.getLogger(BookingController.class);
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBooking(@PathVariable Long id) {
         boolean success = bookingService.deleteBooking(id);
-        try {
-            if (success) {
-                log.info("Successfully Deleted booking with id {}", id);
-                return ResponseEntity.ok().build();
 
-            } else {
-                log.warn("Failed to delete booking with id {}", id);
-                return ResponseEntity.notFound().build();
-            }
-        }catch (Exception e){
-            log.error("Error while deleting booking with id {}", id, e);
+        if (success) {
+            return ResponseEntity.ok().build();
+
+        } else {
+            return ResponseEntity.notFound().build();
         }
 
-        log.error("something big happened you should not reach this message");
-        return null;
-
     }
+
 
     @GetMapping
     public List<Booking> listBookings() {
@@ -101,6 +97,7 @@ public class BookingController {
         }
         return ResponseEntity.ok(booking);
     }
+
     @GetMapping("/exists")
     public ResponseEntity<Boolean> existsBookings(@RequestParam Long customerId) {
         return ResponseEntity.ok(bookingService.hasBookingsForCustomer(customerId));
