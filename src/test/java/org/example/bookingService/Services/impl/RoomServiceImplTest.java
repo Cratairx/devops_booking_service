@@ -1,7 +1,9 @@
 package org.example.bookingService.Services.impl;
 
 import org.example.bookingService.ENUMS.RoomType;
+import org.example.bookingService.Exceptions.RoomHasBookingsException;
 import org.example.bookingService.Models.Room;
+import org.example.bookingService.Repositories.BookingRepository;
 import org.example.bookingService.Repositories.RoomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,11 +25,14 @@ class RoomServiceImplTest {
     @Mock
     private RoomRepository roomRepository;
 
+    @Mock
+    private BookingRepository bookingRepository;
+
     private RoomServiceImpl roomService;
 
     @BeforeEach
     void setUp() {
-        roomService = new RoomServiceImpl(roomRepository);
+        roomService = new RoomServiceImpl(roomRepository, bookingRepository);
     }
 
     @Test
@@ -50,6 +55,7 @@ class RoomServiceImplTest {
     @Test
     void deleteRoomDeletesAndReturnsTrueWhenExists() {
         when(roomRepository.existsById(1L)).thenReturn(true);
+        when(bookingRepository.existsByRoomId(1L)).thenReturn(false);
 
         assertThat(roomService.deleteRoom(1L)).isTrue();
         verify(roomRepository).deleteById(1L);
@@ -60,6 +66,16 @@ class RoomServiceImplTest {
         when(roomRepository.existsById(1L)).thenReturn(false);
 
         assertThat(roomService.deleteRoom(1L)).isFalse();
+        verify(roomRepository, never()).deleteById(any());
+    }
+
+    @Test
+    void deleteRoomThrowsWhenRoomHasBookings() {
+        when(roomRepository.existsById(1L)).thenReturn(true);
+        when(bookingRepository.existsByRoomId(1L)).thenReturn(true);
+
+        assertThatThrownBy(() -> roomService.deleteRoom(1L))
+                .isInstanceOf(RoomHasBookingsException.class);
         verify(roomRepository, never()).deleteById(any());
     }
 
