@@ -52,6 +52,7 @@ jobs:
          docker buildx imagetools create \
          -t craty321/booking-service-java25:staging \
          craty321/booking-service-java25:${{ github.run_number }}
+     
 
   deploy_production:
    if: github.event_name == 'workflow_dispatch'
