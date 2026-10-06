@@ -13,7 +13,7 @@ import org.springframework.web.client.RestClient;
 public class CustomerClient {
 
 
-   
+   // Staging test
     private static final Logger log = (Logger) LoggerFactory.getLogger(CustomerClient.class);
 
     private final RestClient restClient;
